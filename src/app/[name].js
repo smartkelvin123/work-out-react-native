@@ -1,5 +1,4 @@
 import { useLocalSearchParams } from "expo-router";
-import exercises from "../../assets/data/exercises.json";
 import { Stack } from "expo-router";
 import {
   View,
@@ -12,8 +11,8 @@ import { useState } from "react";
 
 import { gql } from "graphql-request";
 import { useQuery } from "@tanstack/react-query";
-// import graphqlClient from "../graphqlClient";
 import { client as graphqlClient } from "../graphClient";
+import NewSetInput from "../component/NewSetInput";
 
 const exerciseQuery = gql`
   query exercises($name: String) {
@@ -70,6 +69,7 @@ export default function ExerciseDetailsScreen() {
           {isInstructionExpanded ? "See less" : "See more"}
         </Text>
       </View>
+      <NewSetInput />
     </ScrollView>
   );
 }
