@@ -1,13 +1,46 @@
 import { StatusBar } from "expo-status-bar";
-import exercises from "../../assets/data/exercises.json";
-import { StyleSheet, View, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  ActivityIndicator,
+  Text,
+} from "react-native";
 import ExerciseListItem from "../component/ExerciseListItem";
+import { useQuery } from "@tanstack/react-query";
+import { gql, request } from "graphql-request";
+import { client } from "../graphClient";
 
-const App = () => {
+const exercisesQuery = gql`
+  query exercises($muscles: String, $name: String) {
+    exercises(muscles: $muscles, name: $name) {
+      muscle
+      name
+    }
+  }
+`;
+
+const ExerciseScreen = () => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["exercises"],
+    queryFn: async () => {
+      return client.request({ document: exercisesQuery });
+    },
+  });
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    console.log(error);
+    return <Text>Failed to fetch exercises</Text>;
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={exercises}
+        data={data.exercises}
         contentContainerStyle={{ gap: 5 }}
         keyExtractor={(item, index) => item.name + index}
         renderItem={({ item }) => <ExerciseListItem item={item} />}
@@ -27,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default ExerciseScreen;
