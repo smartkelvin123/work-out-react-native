@@ -16,6 +16,7 @@ const exercisesQuery = gql`
     exercises(muscles: $muscles, name: $name) {
       muscle
       name
+      equipment
     }
   }
 `;
@@ -40,7 +41,7 @@ const ExerciseScreen = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={data.exercises}
+        data={data?.exercises}
         contentContainerStyle={{ gap: 5 }}
         keyExtractor={(item, index) => item.name + index}
         renderItem={({ item }) => <ExerciseListItem item={item} />}
