@@ -1,0 +1,32 @@
+type Document {
+  _id: String
+}
+
+type Root {
+  document: Document
+}
+
+scalar InputProjection
+
+type Query {
+  sets:Root
+    @rest(
+      method: POST
+      endpoint: "https://eu-central-1.aws.data.mongodb-api.com/app/data-fftvn/endpoint/data/v1/action/findOne"
+      headers: [
+        { name: "access-control-request-headers", value: "*" }
+        {
+          name: "api-key"
+          value: "IAHIMSOlQ0kuPUWbJWfPvapjIRStGPuR1Oz4TU0OqFo2413yDV6KssHQAQwJrkuc"
+        }
+      ]
+      postbody: """
+        {
+          "collection": "sets",
+          "dataSource": "Cluster0",
+          "database": "workouts",
+        
+        }
+      """
+    )
+}
